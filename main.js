@@ -15,14 +15,9 @@ import jsQR from "jsqr";
 
   async function fileLoaded(file) {
     if (!file) return;
-
-    const fileUrl = URL.createObjectURL(file);
-    const doc = await getDocument({ url: fileUrl }).promise;
     $("#imagelist").html("");
 
-    for (let i = 1; i <= doc.numPages; i++) {
-      const page = await doc.getPage(i);
-      const { canvas, code } = await pageToCanvas(page);
+    const append = async ({canvas, code}) => {
       $("#imagelist").append(
         [
           code && `	<p><textarea id="code">${code.data}</textarea></p>`,
@@ -32,8 +27,49 @@ import jsQR from "jsqr";
       )
     }
 
+    if (file.type.startsWith('image/')) {
+      const image = await readImage(file);
+      await append(await imageToCanvas(image))
+      return;
+    }
+
+
+    const fileUrl = URL.createObjectURL(file);
+    const doc = await getDocument({ url: fileUrl }).promise;
+
+    for (let i = 1; i <= doc.numPages; i++) {
+      const page = await doc.getPage(i);
+      await append(await pageToCanvas(page))
+    }
+
+
+
   }
 
+
+  async function readImage(blob) {
+    return new Promise(r => {
+      const url = URL.createObjectURL(blob)
+      const image = new Image();
+      image.onload = () => {
+        r(image);
+        URL.revokeObjectURL(blob);
+      };
+      image.src = url;
+    })
+
+  }
+
+  async function imageToCanvas(image) {
+    const canvas = document.createElement('canvas');
+    canvas.width = image.width;
+    canvas.height = image.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(image, 0, 0)
+    const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const code = jsQR(data.data, canvas.width, canvas.height, { inversionAttempts: "attemptBoth" });
+    return { canvas, code };
+  }
 
   async function pageToCanvas(page) {
 
