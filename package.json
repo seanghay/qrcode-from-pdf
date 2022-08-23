@@ -1,0 +1,19 @@
+{
+  "name": "pdf-scanner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "vite": "^3.0.9"
+  },
+  "dependencies": {
+    "cash-dom": "^8.1.1",
+    "jsqr": "^1.4.0",
+    "milligram": "^1.4.1",
+    "pdfjs-dist": "^2.15.349"
+  }
+}

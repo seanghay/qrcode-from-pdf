@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+    <style>
+      img, textarea {
+        width: 100%;
+				min-height: 64px;
+        height: auto;
+      }
+
+			body {
+				max-width: 720px;
+				margin: 0 auto;
+				padding: 2em;
+			}
+
+			#imagelist img {
+				border: 1px solid #eee;
+			}
+    </style>
+		<title>PDF Scanner</title>
+	</head>
+	<body>
+		<div>
+			<h3>Extract QR from PDF</h3>
+			<button id="button">Choose file</button>
+			<input style="display: none" type="file" name="file" id="file" accept="application/pdf" />
+      <div id="imagelist">
+      </div>
+		
+		</div>
+
+    <script type="module" src="./main.js"></script>
+	</body>
+</html>
